@@ -1,0 +1,10 @@
+{
+  "name": "@stake-dao/sd-token-vesting",
+  "version": "1.0.0",
+  "devDependencies": {
+    "forge-std": "github:foundry-rs/forge-std"
+  },
+  "dependencies": {
+    "@openzeppelin/contracts": "v4.9.6"
+  }
+}
