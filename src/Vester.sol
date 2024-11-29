@@ -243,7 +243,7 @@ contract Vester is Initializable, Pausable, IVester {
         onlyBeneficiary
     {
         /// Check if the token has voting rewards.
-        if (IMerkle(VOTING_REWARDS_MERKLE_STASH).merkleRoot(token) == bytes32(0) && token != address(SD_TOKEN_GAUGE)) {
+        if (IMerkle(VOTING_REWARDS_MERKLE_STASH).merkleRoot(token) == bytes32(0)) {
             revert NoVotingRewards();
         }
 
@@ -253,8 +253,27 @@ contract Vester is Initializable, Pausable, IVester {
             IMerkle(VOTING_REWARDS_MERKLE_STASH).claim(token, index, address(this), amount, proofs);
         }
 
+        uint256 balance;
+
+        /// If the distribution is SD Token Gauge, we need to calculate the balance of the unclaimed vesting positions.
+        /// Otherwise, we can just transfer the balance of the contract.
+        if (token == address(SD_TOKEN_GAUGE)) {
+            uint256 currentNonce = vestingNonce;
+            for (uint256 i = 0; i < currentNonce; i++) {
+                if (!vestingPositions[i].claimed) {
+                    /// Sum up the balance of the unclaimed vesting positions.
+                    balance += vestingPositions[i].amount;
+                }
+            }
+            /// Subtract the balance of the unclaimed vesting positions from the balance of the contract.
+            balance = ERC20(token).balanceOf(address(this)) - balance;
+        } else {
+            /// Otherwise, we can just transfer the balance of the contract.
+            balance = ERC20(token).balanceOf(address(this));
+        }
+
         /// Transfer voting rewards to beneficiary.
-        ERC20(token).safeTransfer(msg.sender, amount);
+        ERC20(token).safeTransfer(msg.sender, balance);
     }
 
     //////////////////////////////////////////////////////////////////
