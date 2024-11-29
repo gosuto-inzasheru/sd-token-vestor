@@ -34,7 +34,7 @@ Vester is a smart contract system designed to manage token vesting for beneficia
 
 ## How to claim voting rewards
 
-- Look for the Vester contract address in the [merkle.json](https://github.com/stake-dao/bounties-report/blob/main/merkle.json) file
+- Look for the Vester contract address in the [merkle.json](https://github.com/stake-dao/bounties-report/blob/main/merkle.json) file (The latest version of the file is always up to date).
 - Use the `claim(address,uint256,address,uint256,bytes32[])` function to claim rewards with the correct parameters (see [Vester.t.sol](test/Vester.t.sol) for more details)
 - (Optional) You can boost your rewards by delegating veSDT to the Vester contract address.
 
