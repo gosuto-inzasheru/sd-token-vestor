@@ -2,6 +2,8 @@
 
 Vester is a smart contract system designed to manage token vesting for beneficiaries using Stake DAO's SD Token Gauge. It provides a factory pattern for deploying individual vesting contracts and handles rewards distribution through liquidity gauges.
 
+Vested token are automatically delegated Stake DAO Delegation, to allow the beneficiary to be eligible for voting rewards.
+
 ## Key Components
 
 1. **Factory**: A contract that deploys and manages individual vesting contracts for beneficiaries. It uses a clone pattern to minimize deployment costs.
