@@ -68,7 +68,7 @@ contract Factory is Ownable, IFactory, AccessControl {
         vestingContract = implementation.clone();
 
         /// Initialise vesting with beneficiary.
-        IVester(vestingContract).initialise(_beneficiary);
+        IVester(vestingContract).initialize(_beneficiary);
 
         /// Store vesting.
         vestingContracts[_beneficiary].push(vestingContract);

@@ -96,7 +96,7 @@ contract VesterTest is Test {
     /// @notice Tests successful deposit creates vesting position
     function testDepositHappy(uint256 _depositAmount) public {
         _depositAmount = bound(_depositAmount, 1e18, SD_BAL_GAUGE.totalSupply());
-        
+
         vm.prank(MAXIS_OPS);
         Vester aliceVester = Vester(factory.deployVestingContract(alice));
 

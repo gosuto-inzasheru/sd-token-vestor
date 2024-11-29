@@ -10,7 +10,7 @@ interface IVester {
     }
 
     /// @notice Initialise vesting contract.
-    function initialise(address _beneficiary) external;
+    function initialize(address _beneficiary) external;
 
     /// @notice Set beneficiary address
     function setBeneficiary(address _beneficiary) external;

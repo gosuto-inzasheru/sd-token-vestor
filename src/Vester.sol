@@ -124,7 +124,7 @@ contract Vester is Initializable, Pausable, IVester {
 
     /// @notice Contract initializer
     /// @param _beneficiary Address of the beneficiary that will be able to claim tokens
-    function initialise(address _beneficiary) public initializer {
+    function initialize(address _beneficiary) public initializer {
         /// Initialize factory address.
         FACTORY = msg.sender;
 
@@ -226,6 +226,12 @@ contract Vester is Initializable, Pausable, IVester {
         ILiquidityGauge(address(SD_TOKEN_GAUGE)).claim_rewards(address(this), beneficiary);
     }
 
+    /// @notice Function to claim voting rewards from the merkle stash.
+    /// SD Token Gauge Holders are eligible for voting rewards that can be claimed by providing a merkle proof.
+    /// @param token Address of the token to claim rewards for
+    /// @param index Index of the reward in the merkle tree
+    /// @param amount Amount of rewards to claim
+    /// @param proofs Merkle proof to claim the rewards
     function claimVotingRewards(address token, uint256 index, uint256 amount, bytes32[] calldata proofs)
         external
         onlyBeneficiary
