@@ -176,10 +176,10 @@ contract Vester is Initializable, Pausable, IVester {
         if (_to == address(0)) {
             revert InvalidAddress();
         }
-        /// Claim rewards and transfer vested tokens to beneficiary.
+        /// Claim rewards and transfer vested tokens to _to parameter.
         ILiquidityGauge(address(SD_TOKEN_GAUGE)).claim_rewards(address(this), _to);
 
-        /// Transfer vested tokens to beneficiary.
+        /// Transfer vested tokens to _to parameter.
         SD_TOKEN_GAUGE.safeTransfer(_to, SD_TOKEN_GAUGE.balanceOf(address(this)));
 
         /// Pause and render the contract useless
