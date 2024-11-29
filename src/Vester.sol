@@ -244,7 +244,7 @@ contract Vester is Initializable, Pausable, IVester {
     {
 
         /// Check if the reward has already been claimed.
-        /// if the token is not in the merkle stash, it'll revert by default.
+        /// If the token is not in the merkle stash, it'll revert by default.
         if (!IMerkle(VOTING_REWARDS_MERKLE_STASH).isClaimed(token, index)) {
             /// Claim voting rewards.
             IMerkle(VOTING_REWARDS_MERKLE_STASH).claim(token, index, address(this), amount, proofs);
