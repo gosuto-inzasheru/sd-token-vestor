@@ -185,6 +185,9 @@ contract Vester is Initializable, Pausable, IVester {
         /// Pause and render the contract useless
         _pause();
 
+        /// Clear delegation.
+        IDelegate(DELEGATION_REGISTRY).clearDelegate(DELEGATION_SPACE);
+
         emit Ragequit(_to);
     }
 

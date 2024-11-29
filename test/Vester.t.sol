@@ -365,6 +365,9 @@ contract VesterTest is Test {
         assertEq(BAL.balanceOf(address(aliceVester)), 0);
         // Make sure contract is bricked
         assertTrue(aliceVester.paused());
+
+        address delegationRegistry = vester.DELEGATION_REGISTRY();
+        assertEq(IDelegate(delegationRegistry).delegation(address(aliceVester), vester.DELEGATION_SPACE()), address(0));
     }
 
     function testCannotRQToZeroAddr(uint256 _depositAmount) public {
