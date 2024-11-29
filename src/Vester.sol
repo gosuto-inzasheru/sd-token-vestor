@@ -96,6 +96,9 @@ contract Vester is Initializable, Pausable, IVester {
     /// @notice Error emitted when a protected token is swept.
     error ProtectedToken();
 
+    /// @notice Error emitted when the token has no voting rewards.
+    error NoVotingRewards();
+
     /// @notice Error emitted when the caller is not authorized.
     error Unauthorized(bytes32 role);
 
@@ -239,8 +242,16 @@ contract Vester is Initializable, Pausable, IVester {
         external
         onlyBeneficiary
     {
-        /// Claim voting rewards.
-        IMerkle(VOTING_REWARDS_MERKLE_STASH).claim(token, index, address(this), amount, proofs);
+        /// Check if the token has voting rewards.
+        if (IMerkle(VOTING_REWARDS_MERKLE_STASH).merkleRoot(token) == bytes32(0) && token != address(SD_TOKEN_GAUGE)) {
+            revert NoVotingRewards();
+        }
+
+        /// Check if the reward has already been claimed.
+        if (!IMerkle(VOTING_REWARDS_MERKLE_STASH).isClaimed(token, index)) {
+            /// Claim voting rewards.
+            IMerkle(VOTING_REWARDS_MERKLE_STASH).claim(token, index, address(this), amount, proofs);
+        }
 
         /// Transfer voting rewards to beneficiary.
         ERC20(token).safeTransfer(msg.sender, amount);
