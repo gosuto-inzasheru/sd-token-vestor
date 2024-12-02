@@ -221,10 +221,10 @@ contract Vester is Initializable, Pausable, IVester {
         vestingPosition.claimed = true;
 
         /// Claim rewards to the beneficiary.
-        ILiquidityGauge(address(SD_TOKEN_GAUGE)).claim_rewards(address(this), msg.sender);
+        ILiquidityGauge(address(SD_TOKEN_GAUGE)).claim_rewards(address(this), beneficiary);
 
         /// Transfer vested tokens to beneficiary.
-        SD_TOKEN_GAUGE.safeTransfer(msg.sender, vestingPosition.amount);
+        SD_TOKEN_GAUGE.safeTransfer(beneficiary, vestingPosition.amount);
 
         emit Claimed(_nonce, vestingPosition.amount);
     }
