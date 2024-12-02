@@ -9,7 +9,7 @@ interface IVester {
         bool claimed;
     }
 
-    /// @notice Initialise vesting contract.
+    /// @notice Initialize vesting contract.
     function initialize(address _beneficiary) external;
 
     /// @notice Set beneficiary address
