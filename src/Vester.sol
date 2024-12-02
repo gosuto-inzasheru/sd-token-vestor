@@ -84,6 +84,9 @@ contract Vester is Initializable, Pausable, IVester {
     /// @notice Emitted when a token is swept.
     event Sweep(address indexed token, uint256 amount, address indexed to);
 
+    /// @notice Emitted when voting rewards are claimed.
+    event VotingRewardsClaimed(address indexed token, uint256 indexed index, uint256 amount);
+
     /// @notice Error emitted when the ragequit address is the zero address.
     error InvalidAddress();
 
@@ -247,6 +250,8 @@ contract Vester is Initializable, Pausable, IVester {
         if (!IMerkle(VOTING_REWARDS_MERKLE_STASH).isClaimed(token, index)) {
             /// Claim voting rewards.
             IMerkle(VOTING_REWARDS_MERKLE_STASH).claim(token, index, address(this), amount, proofs);
+        } else {
+            revert NoVotingRewards();
         }
 
         /// Get the balance of the contract.
@@ -266,6 +271,7 @@ contract Vester is Initializable, Pausable, IVester {
 
         /// Transfer voting rewards to beneficiary.
         ERC20(token).safeTransfer(msg.sender, balance);
+        emit VotingRewardsClaimed(token, index, balance);
     }
 
     //////////////////////////////////////////////////////////////////
