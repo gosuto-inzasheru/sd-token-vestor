@@ -33,7 +33,7 @@ Vested token are automatically delegated Stake DAO Delegation, to allow the bene
 - **Manager**: Can deposit tokens and update delegation settings
 - **Beneficiary**: Can claim vested tokens and rewards
 - **Ragequit Role**: Can execute emergency withdrawal
-- **Admin**: Can deploy new vesting contracts and update implementation
+- **Factory Owner**: Can deploy new vesting contracts and update implementation
 
 ## How to claim voting rewards
 
