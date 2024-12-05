@@ -84,6 +84,9 @@ contract Vester is Initializable, Pausable, IVester {
     /// @notice Emitted when a token is swept.
     event Sweep(address indexed token, uint256 amount, address indexed to);
 
+    /// @notice Emitted when voting rewards are claimed.
+    event VotingRewardsClaimed(address indexed token, uint256 indexed index, uint256 amount);
+
     /// @notice Error emitted when the ragequit address is the zero address.
     error InvalidAddress();
 
@@ -95,9 +98,6 @@ contract Vester is Initializable, Pausable, IVester {
 
     /// @notice Error emitted when a protected token is swept.
     error ProtectedToken();
-
-    /// @notice Error emitted when the token has no voting rewards.
-    error NoVotingRewards();
 
     /// @notice Error emitted when the caller is not authorized.
     error Unauthorized(bytes32 role);
@@ -218,10 +218,10 @@ contract Vester is Initializable, Pausable, IVester {
         vestingPosition.claimed = true;
 
         /// Claim rewards to the beneficiary.
-        ILiquidityGauge(address(SD_TOKEN_GAUGE)).claim_rewards(address(this), msg.sender);
+        ILiquidityGauge(address(SD_TOKEN_GAUGE)).claim_rewards(address(this), beneficiary);
 
         /// Transfer vested tokens to beneficiary.
-        SD_TOKEN_GAUGE.safeTransfer(msg.sender, vestingPosition.amount);
+        SD_TOKEN_GAUGE.safeTransfer(beneficiary, vestingPosition.amount);
 
         emit Claimed(_nonce, vestingPosition.amount);
     }
@@ -247,7 +247,6 @@ contract Vester is Initializable, Pausable, IVester {
         if (!IMerkle(VOTING_REWARDS_MERKLE_STASH).isClaimed(token, index)) {
             /// Claim voting rewards.
             IMerkle(VOTING_REWARDS_MERKLE_STASH).claim(token, index, address(this), amount, proofs);
-        }
 
         /// Get the balance of the contract.
         uint256 balance = ERC20(token).balanceOf(address(this));
@@ -266,6 +265,7 @@ contract Vester is Initializable, Pausable, IVester {
 
         /// Transfer voting rewards to beneficiary.
         ERC20(token).safeTransfer(msg.sender, balance);
+        emit VotingRewardsClaimed(token, index, balance);
     }
 
     //////////////////////////////////////////////////////////////////

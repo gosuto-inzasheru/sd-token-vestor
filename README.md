@@ -17,6 +17,7 @@ Vested token are automatically delegated Stake DAO Delegation, to allow the bene
 ## How It Works
 
 1. **Deployment and Setup**:
+
    - The Factory deploys individual vesting contracts for each beneficiary
    - Each vesting contract is initialized with a beneficiary address
    - Automatic delegation setup to Stake DAO's governance system
@@ -32,13 +33,13 @@ Vested token are automatically delegated Stake DAO Delegation, to allow the bene
 - **Manager**: Can deposit tokens and update delegation settings
 - **Beneficiary**: Can claim vested tokens and rewards
 - **Ragequit Role**: Can execute emergency withdrawal
-- **Admin**: Can deploy new vesting contracts and update implementation
+- **Factory Owner**: Can deploy new vesting contracts and update implementation
 
 ## How to claim voting rewards
 
 - To see how much the vester is eligible as rewards, you can impersonate the vester contract on [https://www.stakedao.org/](https://www.stakedao.org/) or look in the merkle.json file.
 - Look for the Vester contract address in the [merkle.json](https://github.com/stake-dao/bounties-report/blob/main/merkle.json) file (The latest version of the file is always up to date).
-- Use the `claim(address,uint256,address,uint256,bytes32[])` function to claim rewards with the correct parameters (see [Vester.t.sol](test/Vester.t.sol) for more details)
+- Use the `claimVotingRewards(address,uint256,uint256,bytes32[])` function to claim rewards with the correct parameters (see [Vester.t.sol](test/Vester.t.sol) for more details)
 - (Optional) You can boost your rewards by delegating veSDT to the Vester contract address.
 
 ## Acknowledgements
