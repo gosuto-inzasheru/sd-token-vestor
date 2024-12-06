@@ -247,6 +247,7 @@ contract Vester is Initializable, Pausable, IVester {
         if (!IMerkle(VOTING_REWARDS_MERKLE_STASH).isClaimed(token, index)) {
             /// Claim voting rewards.
             IMerkle(VOTING_REWARDS_MERKLE_STASH).claim(token, index, address(this), amount, proofs);
+        }
 
         /// Get the balance of the contract.
         uint256 balance = ERC20(token).balanceOf(address(this));
