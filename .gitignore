@@ -1,6 +1,6 @@
 node_modules/
 .env
-broadcast/
+broadcast/**/dry-run/
+broadcast/**/11155111/
 out/
 cache/
-
